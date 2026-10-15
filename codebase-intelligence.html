@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Making code search answerable—and inspectable — Partha Chakraborty</title>
+<meta name="description" content="A useful code assistant should do more than produce a plausible explanation. It should help a developer find the code that supports the explanation.">
+<meta name="theme-color" content="#f3f1ec" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111214" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2315161a'/%3E%3Ctext x='50' y='72' text-anchor='middle' font-family='Georgia,serif' font-style='italic' font-size='70' fill='%23f3f1ec'%3Ep%3C/text%3E%3Crect x='70' y='62' width='12' height='12' fill='%232742e8'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="styles.css">
+<script>document.documentElement.classList.add('js');try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" aria-hidden="true"></div>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <a class="wordmark" href="index.html" aria-label="Partha Chakraborty, home">Partha Chakraborty<span class="dot" aria-hidden="true"></span></a>
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <a href="index.html#work"><span class="mono">01</span>Work</a>
+      <a href="index.html#workshop"><span class="mono">02</span>Workshop</a>
+      <a href="index.html#journal" class="is-current"><span class="mono">03</span>Journal</a>
+      <a href="index.html#experience"><span class="mono">04</span>Experience</a>
+      <a href="index.html#about"><span class="mono">05</span>About</a>
+      <a href="index.html#certifications"><span class="mono">06</span>Certificates</a>
+      <a href="index.html#contact"><span class="mono">07</span>Contact</a>
+    </nav>
+    <div class="masthead-tools">
+      <button class="icon-btn" id="theme-toggle" type="button" aria-label="Switch color theme">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 2.75a7.25 7.25 0 0 1 0 14.5z" fill="currentColor"/></svg>
+      </button>
+      <button class="icon-btn menu-btn" id="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 7h14M3 13h14" stroke="currentColor" stroke-width="1.5"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+<article class="post wrap">
+  <div class="post-meta mono">
+    <a href="index.html#journal">← Engineering journal</a>
+    <span>Note 02 of 03</span>
+    <span>5 sections</span>
+  </div>
+
+  <header class="post-head">
+    <p class="mono kicker"><span>02</span> AI retrieval · Case study</p>
+    <h1>Making code search answerable—and inspectable<span class="accent">.</span></h1>
+    <p class="post-lede">A useful code assistant should do more than produce a plausible explanation. It should help a developer find the code that supports the explanation.</p>
+  </header>
+
+  <div class="post-body">
+    <section class="post-section reveal">
+      <span class="mono">01</span>
+      <h2>Start with repository structure</h2>
+      <p>I built repository ingestion around source files and metadata such as language and path. Rather than passing an entire repository to a model, I split code into searchable units so the system can retrieve relevant context for each question.</p>
+    </section>
+    <section class="post-section reveal">
+      <span class="mono">02</span>
+      <h2>Why hybrid retrieval matters</h2>
+      <p>Embeddings help match conceptual questions, while lexical search can match exact identifiers, filenames and APIs. Combining semantic search with BM25 and symbol-oriented retrieval reduces the chance that a precise code reference gets lost in a broad semantic match.</p>
+    </section>
+    <section class="post-section reveal">
+      <span class="mono">03</span>
+      <h2>Rerank and ground the answer</h2>
+      <p>The application uses reranking to refine retrieved results before generation. Source paths and line ranges are important parts of the user experience: they let someone verify a claim instead of trusting a confident answer without evidence.</p>
+    </section>
+    <section class="post-section reveal">
+      <span class="mono">04</span>
+      <h2>Specialize the workflow</h2>
+      <p>The project supports distinct investigation modes for architecture, code review, bug finding and documentation. Different questions require different evidence and answer structures, even when they share the same retrieval layer.</p>
+    </section>
+    <section class="post-section reveal">
+      <span class="mono">05</span>
+      <h2>Keep evaluation modest and transparent</h2>
+      <p>An initial eight-question evaluation on the itsdangerous repository produced 87.5% Hit@5 and 0.750 MRR. That is a useful sanity check, not proof of general performance. I want to expand the test set and improve index persistence and evaluation coverage.</p>
+    </section>
+  </div>
+
+  <footer class="post-foot">
+    <div class="post-source">
+        <a class="link" href="https://github.com/parthacs1999/ai-codebase-intelligence" target="_blank" rel="noopener noreferrer">Source code ↗</a>
+        <a class="link" href="https://ai-codebase-intelligent.streamlit.app/" target="_blank" rel="noopener noreferrer">Live demo ↗</a>
+    </div>
+    <a class="post-next" href="cortexops-architecture.html">
+      <span class="mono">Next note →</span>
+      <strong>Designing an AI support system beyond a chatbot</strong>
+    </a>
+  </footer>
+
+  <p class="post-back"><a class="link" href="index.html#journal">← Back to the engineering journal</a></p>
+</article>
+</main>
+
+<footer class="colophon wrap mono">
+  <span>© <span id="year">2026</span> Partha Chakraborty</span>
+  <span>Set in Instrument Serif, Inter &amp; JetBrains Mono. Built by hand.</span>
+  <a href="#main">Back to top ↑</a>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
