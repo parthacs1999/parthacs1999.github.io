@@ -110,7 +110,11 @@ if (form) {
     fields.forEach(f => f.setAttribute('aria-invalid', String(!f.checkValidity() || !f.value.trim())));
     const invalid = fields.find(f => f.getAttribute('aria-invalid') === 'true');
     if (invalid) { setStatus('Please add your name, a valid email and a message.', 'is-error'); invalid.focus(); return; }
-    if (form.elements._honey.value) return;
+    // FormSubmit refuses pages opened straight from disk (file://).
+    if (location.protocol === 'file:') {
+      setStatus('The form only works when the site is served over http(s), not opened as a file. Email <a href="mailto:parthac350@gmail.com">parthac350@gmail.com</a> instead.', 'is-error');
+      return;
+    }
 
     submit.disabled = true;
     setStatus('Sending…');
@@ -120,12 +124,18 @@ if (form) {
         headers: { Accept: 'application/json' },
         body: new FormData(form),
       });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || String(data.success) === 'false') throw new Error(data.message || res.status);
+      const data = await res.json().catch(() => null);
+      // No JSON usually means a Cloudflare challenge page: let the browser post normally instead.
+      if (!data) { form.submit(); return; }
+      if (!res.ok || String(data.success) === 'false') {
+        setStatus(`${data.message || 'Couldn’t send right now.'} You can also email <a href="mailto:parthac350@gmail.com">parthac350@gmail.com</a>.`, 'is-error');
+        return;
+      }
       form.reset();
       setStatus('Thanks—your message is on its way. I’ll reply by email.', 'is-ok');
     } catch {
-      setStatus('Couldn’t send right now. Please email <a href="mailto:parthac350@gmail.com">parthac350@gmail.com</a> directly.', 'is-error');
+      // Network or CORS failure on the AJAX endpoint: fall back to a regular form post.
+      form.submit();
     } finally {
       submit.disabled = false;
     }

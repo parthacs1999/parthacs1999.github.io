@@ -419,7 +419,7 @@ code { font: 0.9em var(--mono); background: var(--accent-soft); padding: 0.1em 0
 .field input:focus, .field textarea:focus { outline: none; border-bottom-color: var(--accent); }
 .field:focus-within .mono { color: var(--accent); }
 .field input[aria-invalid="true"], .field textarea[aria-invalid="true"] { border-bottom-color: #f2785c; }
-.hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.hp { display: none !important; }
 .form-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding-top: 4px; }
 .contact .btn-solid { background: var(--accent); border-color: var(--accent); color: var(--inv-bg); }
 .contact .btn-solid:hover { background: var(--ink); border-color: var(--ink); color: var(--inv-bg); }
